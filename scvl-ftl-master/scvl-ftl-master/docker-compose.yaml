@@ -1,0 +1,15 @@
+version: '3'
+
+services:
+  ftl_app:
+    build: ./ftl_app
+    image: django_ftl_api
+    environment:
+      FTL_NAMESPACE: http://ontology.tno.nl/ftl#
+      SLP_URL: http://bctb2.sensorlab.tno.nl:80/api
+      SLP_TOKEN: 4e21e8d95366481be64ed2a71789022884cf85bb
+    volumes:
+    - ./ftl_app/:/usr/app/
+    command: ["python", "manage.py", "runserver", "0.0.0.0:8080"]
+    ports:
+    - 84:8080

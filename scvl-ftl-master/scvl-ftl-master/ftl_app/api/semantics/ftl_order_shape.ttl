@@ -1,0 +1,108 @@
+@prefix rdf:    <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix sh:     <http://www.w3.org/ns/shacl#> .
+@prefix xsd:    <http://www.w3.org/2001/XMLSchema#> .
+@prefix rdfs:   <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix owl:    <http://www.w3.org/2002/07/owl#> .
+
+@prefix scvl:   <http://ontology.tno.nl/scvl#>.
+
+scvl:OrderShape
+    a sh:NodeShape ;
+    sh:targetClass scvl:Order ;
+    sh:property [
+        sh:path scvl:hasCargo ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:node scvl:CargoShape
+    ] ;
+    sh:property [
+        sh:path scvl:timeOfAcceptance ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:datatype xsd:dateTime
+#         # TODO klopt xsd datetime type?
+#         # TODO moet er nog een format bij die datetime?
+    ] ;
+    sh:property [
+        sh:path scvl:placeOfAcceptance ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:datatype xsd:string
+    ] ;
+    sh:property [
+        sh:path scvl:timeOfDelivery ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:datatype xsd:dateTime
+#         # TODO klopt xsd datetime type?
+#         # TODO moet er nog een format bij die datetime?
+    ] ;
+    sh:property [
+        sh:path scvl:placeOfDelivery ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:datatype xsd:string
+    ];
+    sh:property [
+        sh:path scvl:referenceID ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:datatype xsd:string
+    ] .
+
+
+scvl:CargoShape
+    a sh:NodeShape ;
+    sh:targetClass scvl:Cargo ;
+    sh:property [
+        sh:path scvl:typeOfCargo ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:in ("General" "Bulk" "Equipment") ;
+    ] ;
+    sh:property [
+        sh:path scvl:typeOfPackages ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:datatype xsd:string ;
+    ] ;
+    sh:property [
+        sh:path scvl:numberOfPackages ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:datatype xsd:positiveInteger ;
+    ] .
+
+# TODO decide whether to use helper shapes.
+#   Arguably they have the downside that you need to wrap
+#   arguments in order to standardize the field names.
+#   e.g. <order> scvl:time_of_acceptance [scvl:time <timeformat>]
+
+
+# # Helper NodeShape for datetime fields
+# scvl:DateTimeShape
+#     a sh:NodeShape ;
+#     # todo wat voor target moet dit hebben? Geen? FF validaten dan
+#     sh:property [
+#         sh:datatype xsd:datetime
+#         # TODO klopt xsd datetime type?
+#         # TODO moet er nog een format bij die datetime?
+#     ] .
+
+# # Helper NodeShape for location fields
+# scvl:PlaceShape
+#     a sh:NodeShape ;
+#     sh:property [
+#         sh:datatype xsd:string
+#     ]
+
+
+# Every order data graph should contain exactly one order
+scvl:OrderCardinalityShape
+    a sh:NodeShape ;
+    sh:targetNode scvl:Order ;
+    sh:property [
+        sh:path [ sh:inversePath rdf:type ] ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+    ] .

@@ -1,0 +1,14 @@
+cryptography
+python-gnupg
+Pillow
+markdown
+django 
+django-tinymce 
+django-filter 
+djangorestframework 
+djangorestframework-recursive 
+django-cors-headers 
+rdflib
+rdflib-jsonld
+coreapi
+pyyaml
